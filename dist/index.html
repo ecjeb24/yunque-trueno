@@ -192,6 +192,6 @@ const unifiedRenderBase=render;render=function(){if(roleMode==='staff'&&current=
 try{const saved=JSON.parse(localStorage.getItem(ACCOUNT_KEY)||'{}');if(Array.isArray(saved.staffSessions))staffSessions=saved.staffSessions;if(Array.isArray(saved.branches))branches=saved.branches;if(Array.isArray(saved.reservations))memberReservations=saved.reservations;if(saved.account)accountData=saved.account;if(Array.isArray(saved.accounts))gymAccounts=saved.accounts;if(saved.blockedSlots&&typeof saved.blockedSlots==='object')Object.assign(blockedSlots,saved.blockedSlots);staffSessions=validBranchSessions();memberReservations=memberReservations.filter(r=>!r.branch||branches.some(b=>branchName(b)===branchName(r.branch)))}catch(e){console.warn('No se pudo recuperar el estado guardado',e)}
 persistNow();
 </script><style>
-.role-card h3{font-family:"Neographik MT","Neographik",Impact,"Arial Black",sans-serif!important;font-weight:900!important;-webkit-text-stroke:.35px currentColor;letter-spacing:.045em!important;line-height:1.15}
+.role-card h3{font-family:"Neographik MT","Neographik",Impact,"Arial Black",sans-serif!important;font-weight:900!important;-webkit-text-stroke:1.15px currentColor!important;paint-order:stroke fill;letter-spacing:.045em!important;line-height:1.15}
 </style></body></html>
 </script></body></html>
