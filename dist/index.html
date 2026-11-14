@@ -197,6 +197,7 @@ persistNow();
 <script>
 window.YUNQUE_SUPABASE_CONFIG={url:'https://veocnvuzttqlnokfafgq.supabase.co',anonKey:'sb_publishable_JFsNh8wccM7q_EFcwN71Pg_Yp04_xdB'};
 const roleGate=document.getElementById('roleGate');if(roleGate)roleGate.style.display='grid';
-(function loadSupabase(i=0){const sources=['https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2','https://unpkg.com/@supabase/supabase-js@2'];const script=document.createElement('script');script.src=sources[i];script.onload=()=>{const auth=document.createElement('script');auth.src='/dist/auth.js?v=ebf6666';document.body.append(auth)};script.onerror=()=>{if(i+1<sources.length)loadSupabase(i+1);else console.error('No se pudo cargar Supabase')};document.head.append(script)})();
 </script>
+<script src="/dist/vendor/supabase.js"></script>
+<script src="/dist/auth.js?v=63bfe05"></script>
 </body></html>
