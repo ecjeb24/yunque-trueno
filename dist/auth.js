@@ -70,6 +70,7 @@
   function gateSetup() {
     const gate = document.getElementById('roleGate');
     if (!gate) return;
+    gate.style.display = 'grid';
     const cards = [...gate.querySelectorAll('.role-card')];
     const grid = gate.querySelector('.role-grid');
     if (grid) grid.classList.add('auth-single');
