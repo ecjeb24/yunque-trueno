@@ -128,7 +128,7 @@
     const {data: reservationRows,error: reservationError} = await reservationsQuery;
     if (reservationError) throw reservationError;
     const profilesQuery = profile.role === 'staff'
-      ? client.from('gym_profiles').select('id,full_name,email,credits,created_at,role')
+      ? client.from('gym_profiles').select('*')
       : Promise.resolve({data:[profile],error:null});
     const ledgerQuery = client.from('gym_credit_ledger').select('*').order('created_at',{ascending:false});
     const [{data: profiles,error: profilesError},{data: ledger,error: ledgerError}] = await Promise.all([profilesQuery,ledgerQuery]);
@@ -140,17 +140,28 @@
       const s=row.session_data||{};
       return {id:row.id,user_id:row.user_id,memberId:row.user_id,date:row.class_date,day:row.class_date,time:s[0]||'',activity:s[1]||'',branch:String(s[2]||'').split(' · ')[0],place:s[2]||'',coach:s[3]||'',attendance:row.attendance,memberName:byUser.get(row.user_id)?.full_name||'',memberEmail:byUser.get(row.user_id)?.email||''};
     }));
-    replaceArray(window.gymAccounts, (profiles||[]).map(p => ({id:p.id,name:p.full_name||'Gymbro',email:p.email||'',credits:p.credits||0,created_at:p.created_at,ledger:creditRows.filter(m=>m.user_id===p.id).map(m=>({date:m.created_at.slice(0,10),label:m.description,amount:m.amount}))})));
+    replaceArray(window.gymAccounts, (profiles||[]).map(p => ({id:p.id,name:p.full_name||'Gymbro',email:p.email||'',photo:p.profile_photo||'',credits:p.credits||0,created_at:p.created_at,ledger:creditRows.filter(m=>m.user_id===p.id).map(m=>({date:m.created_at.slice(0,10),label:m.description,amount:m.amount}))})));
     window.accountData.name=profile.full_name||profile.user_metadata?.full_name||'';
     window.accountData.email=profile.email||'';
     window.accountData.id=profile.id;
     window.accountData.created_at=profile.created_at;
+    if (typeof profile.profile_photo === 'string') window.accountData.photo=profile.profile_photo;
     window.roleMode=profile.role==='staff'?'staff':'gymbro';
     window.persistNow?.();
   }
 
+  window.saveYunqueProfilePhoto = async function(photoData) {
+    if (!client || !window.accountData?.id) throw new Error('Iniciá sesión para guardar la foto.');
+    const {error}=await client.from('gym_profiles').update({profile_photo:photoData}).eq('id',window.accountData.id);
+    if (error) throw error;
+    window.accountData.photo=photoData;
+    const ownAccount=window.gymAccounts.find(account=>account.id===window.accountData.id);
+    if (ownAccount) ownAccount.photo=photoData;
+    window.persistNow?.();
+  };
+
   async function finishAuth(user) {
-    let {data: profile,error} = await client.from('gym_profiles').select('id,full_name,email,role,credits,created_at').eq('id',user.id).single();
+    let {data: profile,error} = await client.from('gym_profiles').select('*').eq('id',user.id).single();
     if (error) throw error;
     currentProfile = profile;
     await loadSharedData(profile);
@@ -227,7 +238,7 @@
       const {data,error}=await client.rpc('book_gym_class',{p_session:bookingTarget,p_class_date:todayIso()});
       if (error) throw error;
       window.closeModal?.();
-      await loadSharedData(await client.from('gym_profiles').select('id,full_name,email,role,credits,created_at').eq('id',window.accountData.id).single().then(r=>r.data));
+      await loadSharedData(await client.from('gym_profiles').select('*').eq('id',window.accountData.id).single().then(r=>r.data));
       window.render?.();
       alert('Reserva confirmada. Se guardó en tu cuenta.');
     } catch(error) { alert(errorText(error)); }
@@ -241,8 +252,8 @@
     if (error) { alert(errorText(error)); return; }
     reservation.attendance=value;
     window.persistNow?.();
-    window.renderMemberReservations?.();
-    window.renderStats?.();
+    if (window.roleMode === 'staff' && document.getElementById('crumb')?.textContent === 'Asistencias') window.render?.();
+    else { window.renderMemberReservations?.(); window.renderStats?.(); }
   };
 
   const oldCreditPrompt=window.creditPrompt;
@@ -255,7 +266,7 @@
       if (!Number.isFinite(amount)||amount<1) return false;
       const {error}=await client.rpc('grant_gym_credits',{p_user_id:account.id,p_amount:amount});
       if (error) { alert(errorText(error)); return false; }
-      await loadSharedData(await client.from('gym_profiles').select('id,full_name,email,role,credits,created_at').eq('id',window.accountData.id).single().then(r=>r.data));
+      await loadSharedData(await client.from('gym_profiles').select('*').eq('id',window.accountData.id).single().then(r=>r.data));
       window.render?.();
       return true;
     });

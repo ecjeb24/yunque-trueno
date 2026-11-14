@@ -7,11 +7,13 @@ create table if not exists public.gym_profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   full_name text not null default '',
   email text not null default '',
+  profile_photo text not null default '',
   role text not null default 'gymbro' check (role in ('gymbro','staff')),
   credits integer not null default 0 check (credits >= 0),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+alter table public.gym_profiles add column if not exists profile_photo text not null default '';
 
 create table if not exists public.gym_config (
   id integer primary key default 1 check (id = 1),
@@ -189,6 +191,7 @@ create policy gym_profiles_update_self on public.gym_profiles for update to auth
 using (id = auth.uid()) with check (id = auth.uid());
 revoke update on public.gym_profiles from authenticated;
 grant update(full_name, updated_at) on public.gym_profiles to authenticated;
+grant update(profile_photo) on public.gym_profiles to authenticated;
 
 drop policy if exists gym_config_read_authenticated on public.gym_config;
 create policy gym_config_read_authenticated on public.gym_config for select to authenticated using (true);
