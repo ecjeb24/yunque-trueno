@@ -94,7 +94,7 @@
       const page = button.dataset.page;
       button.style.setProperty('display', allowed.includes(page) ? (mobile?'flex':'block') : 'none', 'important');
       button.classList.toggle('active', page === current);
-      if (page === 'reservas') button.innerHTML = '<span>◷ ✓</span>'+(role === 'staff'?'Reservados':'Mis reservas');
+      if (page === 'reservas') button.innerHTML = '<span>✓</span>'+(role === 'staff'?'Reservados':'Mis reservas');
       const labels={inicio:'Inicio',turnos:'Turnos',reservas:role==='staff'?'Reservados':'Mis reservas',creditos:'Créditos',estadisticas:'Estadísticas',asistencias:'Asistencias'};
       if(labels[page]) { button.setAttribute('aria-label',labels[page]); button.title=labels[page]; }
     });
