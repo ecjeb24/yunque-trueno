@@ -16,6 +16,25 @@
     .attendance-class { width:100%; text-align:left; }
     .attendance-back { margin-bottom:14px; }
     @media(max-width:700px) {
+      html { scroll-padding-bottom:calc(78px + env(safe-area-inset-bottom, 0px)); }
+      .sidebar { padding-bottom:0!important; }
+      .sidebar .nav {
+        position:fixed!important; left:0; right:0; bottom:0; z-index:100;
+        display:flex!important; align-items:stretch; justify-content:space-around; gap:3px;
+        width:100%; margin:0; padding:6px 6px calc(6px + env(safe-area-inset-bottom, 0px))!important;
+        min-height:68px; background:#10251c; border-top:1px solid #365746;
+        box-shadow:0 -8px 24px #10241930;
+      }
+      .sidebar .nav button {
+        flex:1 1 0; min-width:0; min-height:54px; margin:0; padding:6px 2px!important;
+        border-radius:12px; text-align:center; white-space:normal; line-height:1.1;
+        font-size:10px!important; color:#aac0b1;
+      }
+      .sidebar .nav button span {
+        display:block!important; margin:0 0 3px!important; font-size:19px!important; line-height:1;
+      }
+      .sidebar .nav button.active { background:#2d503e!important; color:#fff!important; }
+      .content { padding-bottom:calc(78px + env(safe-area-inset-bottom, 0px)); }
       .sidebar .nav button.active { background:#2d503e!important; color:#fff!important; }
       .sidebar .nav button:hover:not(.active) { background:transparent!important; color:#aac0b1!important; }
       .booking-layout { grid-template-columns:minmax(0,1fr)!important; }
@@ -66,12 +85,13 @@
   }
 
   window.setRoleNavigation = function(role) {
+    const mobile=window.matchMedia('(max-width:700px)').matches;
     const allowed = role === 'staff'
       ? ['turnos','reservas','creditos','asistencias']
       : ['inicio','turnos','reservas','creditos','estadisticas'];
     document.querySelectorAll('.nav button').forEach(button => {
       const page = button.dataset.page;
-      button.style.setProperty('display', allowed.includes(page) ? 'block' : 'none', 'important');
+      button.style.setProperty('display', allowed.includes(page) ? (mobile?'flex':'block') : 'none', 'important');
       button.classList.toggle('active', page === current);
       if (page === 'reservas') button.innerHTML = '<span>✓</span>'+(role === 'staff'?'Reservados':'Mis reservas');
     });
@@ -80,6 +100,7 @@
     document.body.classList.toggle('staff-mode', roleMode === 'staff');
     window.setRoleNavigation(window.roleMode);
   };
+  window.addEventListener('resize',()=>window.setRoleNavigation(roleMode));
 
   let chosenActivity = '';
   let chosenSession = -1;
