@@ -20,7 +20,7 @@
       .sidebar { padding-bottom:0!important; }
       .sidebar .nav {
         position:fixed!important; left:50%; right:auto; bottom:calc(34px + env(safe-area-inset-bottom, 0px)); z-index:100;
-        display:flex!important; align-items:stretch; justify-content:space-around; gap:3px;
+        display:flex!important; align-items:center; justify-content:space-around; gap:5px;
         width:calc(100% - 36px); max-width:460px; margin:0; padding:6px!important; transform:translateX(-50%);
         min-height:64px; background:#10251cf2; border:1px solid #42634f;
         border-radius:9999px; box-shadow:0 8px 28px #10241955, inset 0 1px #ffffff12;
@@ -31,8 +31,8 @@
         font-size:0!important; color:#aac0b1;
       }
       .sidebar .nav button span {
-        display:grid!important; place-items:center; margin:0!important; min-height:42px;
-        font-size:29px!important; line-height:1; font-weight:700;
+        display:grid!important; place-items:center; width:100%; min-height:46px; margin:0!important;
+        font-size:34px!important; line-height:1; font-weight:700;
       }
       .sidebar .nav button.active { background:#2d503e!important; color:#fff!important; }
       .content { padding-bottom:calc(112px + env(safe-area-inset-bottom, 0px)); }
