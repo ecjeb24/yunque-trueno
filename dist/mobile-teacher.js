@@ -16,14 +16,14 @@
     .attendance-class { width:100%; text-align:left; }
     .attendance-back { margin-bottom:14px; }
     @media(max-width:700px) {
-      html { scroll-padding-bottom:calc(78px + env(safe-area-inset-bottom, 0px)); }
+      html { scroll-padding-bottom:calc(112px + env(safe-area-inset-bottom, 0px)); }
       .sidebar { padding-bottom:0!important; }
       .sidebar .nav {
-        position:fixed!important; left:0; right:0; bottom:0; z-index:100;
+        position:fixed!important; left:12px; right:12px; bottom:calc(14px + env(safe-area-inset-bottom, 0px)); z-index:100;
         display:flex!important; align-items:stretch; justify-content:space-around; gap:3px;
-        width:100%; margin:0; padding:6px 6px calc(6px + env(safe-area-inset-bottom, 0px))!important;
-        min-height:68px; background:#10251c; border-top:1px solid #365746;
-        box-shadow:0 -8px 24px #10241930;
+        width:auto; max-width:520px; margin:0 auto; padding:6px!important;
+        min-height:64px; background:#10251cf2; border:1px solid #42634f;
+        border-radius:999px; box-shadow:0 8px 28px #10241955, inset 0 1px #ffffff12;
       }
       .sidebar .nav button {
         flex:1 1 0; min-width:0; min-height:54px; margin:0; padding:6px 2px!important;
@@ -34,7 +34,7 @@
         display:block!important; margin:0 0 3px!important; font-size:19px!important; line-height:1;
       }
       .sidebar .nav button.active { background:#2d503e!important; color:#fff!important; }
-      .content { padding-bottom:calc(78px + env(safe-area-inset-bottom, 0px)); }
+      .content { padding-bottom:calc(112px + env(safe-area-inset-bottom, 0px)); }
       .sidebar .nav button.active { background:#2d503e!important; color:#fff!important; }
       .sidebar .nav button:hover:not(.active) { background:transparent!important; color:#aac0b1!important; }
       .booking-layout { grid-template-columns:minmax(0,1fr)!important; }
