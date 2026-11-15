@@ -26,12 +26,13 @@
         border-radius:9999px; box-shadow:0 8px 28px #10241955, inset 0 1px #ffffff12;
       }
       .sidebar .nav button {
-        flex:1 1 0; min-width:0; min-height:54px; margin:0; padding:6px 2px!important;
-        border-radius:12px; text-align:center; white-space:normal; line-height:1.1;
-        font-size:10px!important; color:#aac0b1;
+        flex:1 1 0; min-width:0; min-height:54px; margin:0; padding:5px 2px!important;
+        border-radius:999px; text-align:center; white-space:nowrap; line-height:1;
+        font-size:0!important; color:#aac0b1;
       }
       .sidebar .nav button span {
-        display:block!important; margin:0 0 3px!important; font-size:19px!important; line-height:1;
+        display:grid!important; place-items:center; margin:0!important; min-height:42px;
+        font-size:29px!important; line-height:1; font-weight:700;
       }
       .sidebar .nav button.active { background:#2d503e!important; color:#fff!important; }
       .content { padding-bottom:calc(112px + env(safe-area-inset-bottom, 0px)); }
@@ -93,7 +94,9 @@
       const page = button.dataset.page;
       button.style.setProperty('display', allowed.includes(page) ? (mobile?'flex':'block') : 'none', 'important');
       button.classList.toggle('active', page === current);
-      if (page === 'reservas') button.innerHTML = '<span>✓</span>'+(role === 'staff'?'Reservados':'Mis reservas');
+      if (page === 'reservas') button.innerHTML = '<span>◷ ✓</span>'+(role === 'staff'?'Reservados':'Mis reservas');
+      const labels={inicio:'Inicio',turnos:'Turnos',reservas:role==='staff'?'Reservados':'Mis reservas',creditos:'Créditos',estadisticas:'Estadísticas',asistencias:'Asistencias'};
+      if(labels[page]) { button.setAttribute('aria-label',labels[page]); button.title=labels[page]; }
     });
   };
   window.applyRoleVisibility = function() {
