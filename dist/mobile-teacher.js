@@ -19,11 +19,11 @@
       html { scroll-padding-bottom:calc(112px + env(safe-area-inset-bottom, 0px)); }
       .sidebar { padding-bottom:0!important; }
       .sidebar .nav {
-        position:fixed!important; left:12px; right:12px; bottom:calc(14px + env(safe-area-inset-bottom, 0px)); z-index:100;
+        position:fixed!important; left:50%; right:auto; bottom:calc(34px + env(safe-area-inset-bottom, 0px)); z-index:100;
         display:flex!important; align-items:stretch; justify-content:space-around; gap:3px;
-        width:auto; max-width:520px; margin:0 auto; padding:6px!important;
+        width:calc(100% - 36px); max-width:460px; margin:0; padding:6px!important; transform:translateX(-50%);
         min-height:64px; background:#10251cf2; border:1px solid #42634f;
-        border-radius:999px; box-shadow:0 8px 28px #10241955, inset 0 1px #ffffff12;
+        border-radius:9999px; box-shadow:0 8px 28px #10241955, inset 0 1px #ffffff12;
       }
       .sidebar .nav button {
         flex:1 1 0; min-width:0; min-height:54px; margin:0; padding:6px 2px!important;
